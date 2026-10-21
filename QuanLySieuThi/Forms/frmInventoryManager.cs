@@ -16,16 +16,14 @@ namespace QuanLySieuThi.Forms
         BindingList<Product> danhSach = new BindingList<Product>();
         BindingSource nguonDuLieu = new BindingSource();
         ErrorProvider baoLoi = new ErrorProvider();
-        System.Windows.Forms.Timer dongHo =
-    new System.Windows.Forms.Timer();
+    System.Windows.Forms.Timer dongHo = new System.Windows.Forms.Timer();
 
         TextBox txtMa = new TextBox();
         TextBox txtTen = new TextBox();
         TextBox txtGia = new TextBox();
         ComboBox cboLoai = new ComboBox();
         NumericUpDown numSoLuong = new NumericUpDown();
-
-        PictureBox picAnh = new PictureBox();
+        PictureBox picProductImage = new PictureBox();
         DataGridView dgvSanPham = new DataGridView();
 
         Button btnThem = new Button();
@@ -34,14 +32,9 @@ namespace QuanLySieuThi.Forms
         Button btnLamMoi = new Button();
         Button btnChonAnh = new Button();
 
-        ToolStripStatusLabel lblTongSoLuong =
-            new ToolStripStatusLabel();
-
-        ToolStripStatusLabel lblTongGiaTri =
-            new ToolStripStatusLabel();
-
-        ToolStripStatusLabel lblThoiGian =
-            new ToolStripStatusLabel();
+        Label lblTongSoLuong = new Label();
+        Label lblTongGiaTri = new Label();
+        Label lblThoiGian = new Label();
 
         string duongDanAnh = "";
 
@@ -50,274 +43,229 @@ namespace QuanLySieuThi.Forms
             TaoGiaoDien();
             GanDuLieu();
             GanSuKien();
-
-            txtMa.Text = TaoMaMoi();
             CapNhatThongKe();
+            txtMa.Text = TaoMaMoi();
 
             dongHo.Interval = 1000;
             dongHo.Tick += (s, e) =>
             {
-                lblThoiGian.Text =
-                    "Thời gian: " +
+                lblThoiGian.Text = "Thoi gian: " +
                     DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
             };
-
             dongHo.Start();
 
             FormClosing += FrmInventoryManager_FormClosing;
         }
 
-        private void TaoGiaoDien()
+        void TaoGiaoDien()
         {
-            Text = "Quản lý kho hàng siêu thị";
-            Size = new Size(1100, 700);
+            Text = "QUAN LY KHO VA BAO CAO";
+            Size = new Size(1100, 750);
             StartPosition = FormStartPosition.CenterScreen;
-            MinimumSize = new Size(900, 600);
 
-            // MENU
             MenuStrip menu = new MenuStrip();
 
-            ToolStripMenuItem heThong =
-                new ToolStripMenuItem("Hệ thống");
+            ToolStripMenuItem menuHeThong =
+                new ToolStripMenuItem("System");
+            ToolStripMenuItem menuMo =
+                new ToolStripMenuItem("Open File");
+            ToolStripMenuItem menuLuu =
+                new ToolStripMenuItem("Save Report");
+            ToolStripMenuItem menuThoat =
+                new ToolStripMenuItem("Exit");
 
-            ToolStripMenuItem moFile =
-                new ToolStripMenuItem("Mở file CSV");
+            menuMo.Click += (s, e) => NhapCSV();
+            menuLuu.Click += (s, e) => XuatCSV();
+            menuThoat.Click += (s, e) => Close();
 
-            ToolStripMenuItem luuBaoCao =
-                new ToolStripMenuItem("Lưu báo cáo");
+            menuHeThong.DropDownItems.Add(menuMo);
+            menuHeThong.DropDownItems.Add(menuLuu);
+            menuHeThong.DropDownItems.Add(new ToolStripSeparator());
+            menuHeThong.DropDownItems.Add(menuThoat);
 
-            ToolStripMenuItem thoat =
-                new ToolStripMenuItem("Thoát");
+            ToolStripMenuItem menuTools =
+                new ToolStripMenuItem("Tools");
+            ToolStripMenuItem menuNhap =
+                new ToolStripMenuItem("Import CSV");
+            ToolStripMenuItem menuXuat =
+                new ToolStripMenuItem("Export CSV");
 
-            moFile.Click += (s, e) => NhapCSV();
-            luuBaoCao.Click += (s, e) => XuatCSV();
-            thoat.Click += (s, e) => Close();
+            menuNhap.Click += (s, e) => NhapCSV();
+            menuXuat.Click += (s, e) => XuatCSV();
 
-            heThong.DropDownItems.Add(moFile);
-            heThong.DropDownItems.Add(luuBaoCao);
-            heThong.DropDownItems.Add(new ToolStripSeparator());
-            heThong.DropDownItems.Add(thoat);
+            menuTools.DropDownItems.Add(menuNhap);
+            menuTools.DropDownItems.Add(menuXuat);
 
-            ToolStripMenuItem congCu =
-                new ToolStripMenuItem("Công cụ");
+            menu.Items.Add(menuHeThong);
+            menu.Items.Add(menuTools);
+            MainMenuStrip = menu;
+            Controls.Add(menu);
 
-            ToolStripMenuItem nhapCSV =
-                new ToolStripMenuItem("Nhập CSV");
-
-            ToolStripMenuItem xuatCSV =
-                new ToolStripMenuItem("Xuất CSV");
-
-            nhapCSV.Click += (s, e) => NhapCSV();
-            xuatCSV.Click += (s, e) => XuatCSV();
-
-            congCu.DropDownItems.Add(nhapCSV);
-            congCu.DropDownItems.Add(xuatCSV);
-
-            menu.Items.Add(heThong);
-            menu.Items.Add(congCu);
-
-            // TOOLSTRIP
-            ToolStrip congCuNhanh = new ToolStrip();
+            ToolStrip congCu = new ToolStrip();
 
             ToolStripButton nutThemNhanh =
-                new ToolStripButton("Thêm sản phẩm");
-
+                new ToolStripButton("Them");
             ToolStripButton nutNhapNhanh =
-                new ToolStripButton("Nhập CSV");
-
+                new ToolStripButton("Import CSV");
             ToolStripButton nutXuatNhanh =
-                new ToolStripButton("Xuất CSV");
-
-            ToolStripButton nutThoatNhanh =
-                new ToolStripButton("Thoát");
+                new ToolStripButton("Export CSV");
 
             nutThemNhanh.Click += (s, e) => ThemSanPham();
             nutNhapNhanh.Click += (s, e) => NhapCSV();
             nutXuatNhanh.Click += (s, e) => XuatCSV();
-            nutThoatNhanh.Click += (s, e) => Close();
 
-            congCuNhanh.Items.Add(nutThemNhanh);
-            congCuNhanh.Items.Add(nutNhapNhanh);
-            congCuNhanh.Items.Add(nutXuatNhanh);
-            congCuNhanh.Items.Add(nutThoatNhanh);
+            congCu.Items.Add(nutThemNhanh);
+            congCu.Items.Add(nutNhapNhanh);
+            congCu.Items.Add(nutXuatNhanh);
+            congCu.Dock = DockStyle.Top;
+            Controls.Add(congCu);
 
-            // STATUSSTRIP
-            StatusStrip trangThai = new StatusStrip();
+            Label tieuDe = new Label();
+            tieuDe.Text = "QUAN LY KHO SAN PHAM";
+            tieuDe.Font = new Font("Arial", 18, FontStyle.Bold);
+            tieuDe.AutoSize = true;
+            tieuDe.Location = new Point(350, 65);
+            Controls.Add(tieuDe);
 
-            lblTongSoLuong.Text = "Tổng số lượng: 0";
-            lblTongGiaTri.Text = "Tổng giá trị: 0";
-            lblThoiGian.Text = "Thời gian:";
+            GroupBox nhomNhap = new GroupBox();
+            nhomNhap.Text = "Thong tin san pham";
+            nhomNhap.Location = new Point(20, 105);
+            nhomNhap.Size = new Size(700, 260);
+            Controls.Add(nhomNhap);
 
-            lblTongSoLuong.Spring = true;
-            lblTongSoLuong.TextAlign = ContentAlignment.MiddleLeft;
+            TaoNhan(nhomNhap, "Ma san pham:", 20, 30);
+            TaoNhan(nhomNhap, "Ten san pham:", 20, 70);
+            TaoNhan(nhomNhap, "Loai:", 20, 110);
+            TaoNhan(nhomNhap, "Don gia:", 350, 30);
+            TaoNhan(nhomNhap, "So luong:", 350, 70);
 
-            lblTongGiaTri.Spring = true;
-            lblTongGiaTri.TextAlign = ContentAlignment.MiddleLeft;
-
-            lblThoiGian.Spring = true;
-            lblThoiGian.TextAlign = ContentAlignment.MiddleRight;
-
-            trangThai.Items.Add(lblTongSoLuong);
-            trangThai.Items.Add(lblTongGiaTri);
-            trangThai.Items.Add(lblThoiGian);
-
-            // KHU VỰC CHÍNH
-            Panel khuVucChinh = new Panel();
-            khuVucChinh.Dock = DockStyle.Fill;
-
-            // KHU VỰC NHẬP THÔNG TIN
-            GroupBox nhomThongTin = new GroupBox();
-            nhomThongTin.Text = "Thông tin sản phẩm";
-            nhomThongTin.Dock = DockStyle.Top;
-            nhomThongTin.Height = 235;
-
-            TaoNhan(nhomThongTin, "Mã sản phẩm:", 20, 30);
-            TaoNhan(nhomThongTin, "Tên sản phẩm:", 20, 75);
-            TaoNhan(nhomThongTin, "Loại sản phẩm:", 20, 120);
-            TaoNhan(nhomThongTin, "Giá:", 390, 30);
-            TaoNhan(nhomThongTin, "Số lượng:", 390, 75);
-            TaoNhan(nhomThongTin, "Ảnh sản phẩm:", 700, 30);
-
-            txtMa.Location = new Point(135, 28);
-            txtMa.Size = new Size(220, 25);
+            TaoO(nhomNhap, txtMa, 130, 30);
             txtMa.ReadOnly = true;
+            TaoO(nhomNhap, txtTen, 130, 70);
+            TaoO(nhomNhap, txtGia, 440, 30);
 
-            txtTen.Location = new Point(135, 73);
-            txtTen.Size = new Size(220, 25);
-
-            cboLoai.Location = new Point(135, 118);
-            cboLoai.Size = new Size(220, 25);
+            cboLoai.Location = new Point(130, 110);
+            cboLoai.Size = new Size(190, 25);
             cboLoai.DropDownStyle = ComboBoxStyle.DropDownList;
-
             cboLoai.Items.AddRange(new object[]
             {
-                "Điện thoại",
-                "Máy tính",
-                "Phụ kiện",
-                "Đồ gia dụng",
-                "Khác"
+                "May tinh",
+                "Dien thoai",
+                "May tinh bang",
+                "Man hinh",
+                "Phu kien",
+                "Khac"
             });
+            nhomNhap.Controls.Add(cboLoai);
 
-            txtGia.Location = new Point(470, 28);
-            txtGia.Size = new Size(170, 25);
-
-            numSoLuong.Location = new Point(470, 73);
-            numSoLuong.Size = new Size(170, 25);
+            numSoLuong.Location = new Point(440, 70);
+            numSoLuong.Size = new Size(190, 25);
             numSoLuong.Minimum = 0;
             numSoLuong.Maximum = 1000000;
+            nhomNhap.Controls.Add(numSoLuong);
 
-            picAnh.Location = new Point(810, 25);
-            picAnh.Size = new Size(140, 105);
-            picAnh.BorderStyle = BorderStyle.FixedSingle;
-            picAnh.SizeMode = PictureBoxSizeMode.Zoom;
+            TaoNut(nhomNhap, btnThem, "Them moi", 20, 155);
+            TaoNut(nhomNhap, btnSua, "Cap nhat", 130, 155);
+            TaoNut(nhomNhap, btnXoa, "Xoa", 240, 155);
+            TaoNut(nhomNhap, btnLamMoi, "Lam moi", 350, 155);
 
-            btnChonAnh.Text = "Chọn ảnh";
-            btnChonAnh.Location = new Point(810, 135);
-            btnChonAnh.Size = new Size(140, 30);
+            btnChonAnh.Text = "Chon anh";
+            btnChonAnh.Location = new Point(20, 205);
+            btnChonAnh.Size = new Size(100, 30);
+            nhomNhap.Controls.Add(btnChonAnh);
 
-            btnThem = TaoNut("Thêm", 20, 175);
-            btnSua = TaoNut("Sửa", 120, 175);
-            btnXoa = TaoNut("Xóa", 220, 175);
-            btnLamMoi = TaoNut("Làm mới", 320, 175);
+            picProductImage.Location = new Point(750, 120);
+            picProductImage.Size = new Size(250, 200);
+            picProductImage.BorderStyle = BorderStyle.FixedSingle;
+            picProductImage.SizeMode = PictureBoxSizeMode.Zoom;
+            Controls.Add(picProductImage);
 
-            nhomThongTin.Controls.Add(txtMa);
-            nhomThongTin.Controls.Add(txtTen);
-            nhomThongTin.Controls.Add(cboLoai);
-            nhomThongTin.Controls.Add(txtGia);
-            nhomThongTin.Controls.Add(numSoLuong);
-            nhomThongTin.Controls.Add(picAnh);
-            nhomThongTin.Controls.Add(btnChonAnh);
-            nhomThongTin.Controls.Add(btnThem);
-            nhomThongTin.Controls.Add(btnSua);
-            nhomThongTin.Controls.Add(btnXoa);
-            nhomThongTin.Controls.Add(btnLamMoi);
-
-            // BẢNG SẢN PHẨM
-            dgvSanPham.Dock = DockStyle.Fill;
-            dgvSanPham.AutoGenerateColumns = false;
+            dgvSanPham.Location = new Point(20, 380);
+            dgvSanPham.Size = new Size(1040, 260);
             dgvSanPham.ReadOnly = true;
             dgvSanPham.AllowUserToAddRows = false;
-            dgvSanPham.AllowUserToDeleteRows = false;
+            dgvSanPham.AutoGenerateColumns = false;
             dgvSanPham.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
             dgvSanPham.MultiSelect = false;
+            dgvSanPham.RowHeadersVisible = false;
             dgvSanPham.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
-            dgvSanPham.RowHeadersVisible = false;
 
-            ThemCot("Ma", "Mã sản phẩm");
-            ThemCot("Ten", "Tên sản phẩm");
-            ThemCot("Loai", "Loại sản phẩm");
+            ThemCot("Ma", "Ma SP", 12);
+            ThemCot("Ten", "Ten san pham", 23);
+            ThemCot("Loai", "Loai", 15);
+            ThemCot("Gia", "Don gia", 15);
+            ThemCot("SoLuong", "So luong", 12);
+            ThemCot("DuongDanAnh", "Ten file anh", 23);
 
-            DataGridViewTextBoxColumn cotGia =
-                new DataGridViewTextBoxColumn();
+            dgvSanPham.Columns["Gia"].DefaultCellStyle.Format = "N0";
+            dgvSanPham.Columns["DuongDanAnh"].DataPropertyName =
+                "DuongDanAnh";
 
-            cotGia.Name = "Gia";
-            cotGia.HeaderText = "Giá";
-            cotGia.DataPropertyName = "Gia";
-            cotGia.DefaultCellStyle.Format = "N0";
-            cotGia.FillWeight = 80;
-            dgvSanPham.Columns.Add(cotGia);
+            Controls.Add(dgvSanPham);
 
-            ThemCot("SoLuong", "Số lượng");
-            ThemCot("DuongDanAnh", "Đường dẫn ảnh");
+            StatusStrip trangThai = new StatusStrip();
 
-            khuVucChinh.Controls.Add(dgvSanPham);
-            khuVucChinh.Controls.Add(nhomThongTin);
+            lblTongSoLuong.Text = "Tong so luong: 0";
+            lblTongGiaTri.Text = "Tong gia tri kho: 0 VNĐ";
+            lblThoiGian.Text = "Thoi gian:";
 
-            // THÊM VÀO FORM
-            Controls.Add(khuVucChinh);
-            Controls.Add(congCuNhanh);
-            Controls.Add(menu);
+            trangThai.Items.Add(new ToolStripStatusLabel(lblTongSoLuong.Text));
+trangThai.Items.Add(new ToolStripStatusLabel(" | "));
+trangThai.Items.Add(new ToolStripStatusLabel(lblTongGiaTri.Text));
+trangThai.Items.Add(new ToolStripStatusLabel(" | "));
+trangThai.Items.Add(new ToolStripStatusLabel(lblThoiGian.Text));
+
             Controls.Add(trangThai);
-
-            MainMenuStrip = menu;
+            trangThai.Dock = DockStyle.Bottom;
 
             baoLoi.ContainerControl = this;
         }
 
-        private void TaoNhan(
-            Control cha, string noiDung, int x, int y)
+        void TaoNhan(Control cha, string chu, int x, int y)
         {
             Label nhan = new Label();
-
-            nhan.Text = noiDung;
-            nhan.Location = new Point(x, y + 3);
-            nhan.AutoSize = true;
-
+            nhan.Text = chu;
+            nhan.Location = new Point(x, y);
+            nhan.Size = new Size(110, 25);
             cha.Controls.Add(nhan);
         }
 
-        private Button TaoNut(string noiDung, int x, int y)
+        void TaoO(Control cha, TextBox o, int x, int y)
         {
-            Button nut = new Button();
+            o.Location = new Point(x, y);
+            o.Size = new Size(190, 25);
+            cha.Controls.Add(o);
+        }
 
-            nut.Text = noiDung;
+        void TaoNut(
+            Control cha, Button nut, string chu, int x, int y)
+        {
+            nut.Text = chu;
             nut.Location = new Point(x, y);
-            nut.Size = new Size(90, 32);
-
-            return nut;
+            nut.Size = new Size(100, 32);
+            cha.Controls.Add(nut);
         }
 
-        private void ThemCot(string tenCot, string tieuDe)
+        void ThemCot(string ten, string tieuDe, float tiLe)
         {
-            DataGridViewTextBoxColumn cot =
-                new DataGridViewTextBoxColumn();
-
-            cot.Name = tenCot;
-            cot.HeaderText = tieuDe;
-            cot.DataPropertyName = tenCot;
-
-            dgvSanPham.Columns.Add(cot);
+            dgvSanPham.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = ten,
+                HeaderText = tieuDe,
+                DataPropertyName = ten,
+                FillWeight = tiLe
+            });
         }
 
-        private void GanDuLieu()
+        void GanDuLieu()
         {
             nguonDuLieu.DataSource = danhSach;
             dgvSanPham.DataSource = nguonDuLieu;
         }
 
-        private void GanSuKien()
+        void GanSuKien()
         {
             btnThem.Click += (s, e) => ThemSanPham();
             btnSua.Click += (s, e) => SuaSanPham();
@@ -327,227 +275,154 @@ namespace QuanLySieuThi.Forms
 
             dgvSanPham.SelectionChanged += (s, e) =>
             {
-                if (dgvSanPham.CurrentRow == null)
+                Product p = dgvSanPham.CurrentRow?.DataBoundItem
+                    as Product;
+
+                if (p == null)
                     return;
 
-                if (dgvSanPham.CurrentRow.DataBoundItem is Product sp)
-                {
-                    txtMa.Text = sp.Ma;
-                    txtTen.Text = sp.Ten;
-                    cboLoai.SelectedItem = sp.Loai;
-                    txtGia.Text = sp.Gia.ToString(
-                        CultureInfo.InvariantCulture);
-                    numSoLuong.Value = sp.SoLuong;
-
-                    duongDanAnh = sp.DuongDanAnh;
-                    HienThiAnh(duongDanAnh);
-                }
+                txtMa.Text = p.Ma;
+                txtTen.Text = p.Ten;
+                cboLoai.SelectedItem = p.Loai;
+                txtGia.Text = p.Gia.ToString();
+                numSoLuong.Value = p.SoLuong;
+                duongDanAnh = p.DuongDanAnh;
+                HienThiAnh(duongDanAnh);
             };
+
+            danhSach.ListChanged += (s, e) => CapNhatThongKe();
         }
 
-        private string TaoMaMoi()
+        string TaoMaMoi()
         {
-            int soLonNhat = 0;
+            int so = 1;
+            string ma;
 
-            foreach (Product sp in danhSach)
+            do
             {
-                if (sp.Ma.StartsWith("SP"))
-                {
-                    string phanSo = sp.Ma.Substring(2);
-
-                    if (int.TryParse(phanSo, out int so))
-                    {
-                        if (so > soLonNhat)
-                            soLonNhat = so;
-                    }
-                }
+                ma = "SP" + so.ToString("D3");
+                so++;
             }
+            while (danhSach.Any(p => p.Ma == ma));
 
-            return "SP" + (soLonNhat + 1).ToString("D3");
+            return ma;
         }
 
-        private bool KiemTra()
+        bool KiemTra()
         {
             baoLoi.Clear();
             bool hopLe = true;
+            decimal gia;
 
-            if (string.IsNullOrWhiteSpace(txtTen.Text))
+            if (txtTen.Text.Trim() == "")
             {
-                baoLoi.SetError(txtTen, "Vui lòng nhập tên sản phẩm");
+                baoLoi.SetError(txtTen, "Hay nhap ten san pham");
                 hopLe = false;
             }
 
-            if (cboLoai.SelectedIndex < 0)
+            if (cboLoai.SelectedIndex == -1)
             {
-                baoLoi.SetError(cboLoai, "Vui lòng chọn loại sản phẩm");
+                baoLoi.SetError(cboLoai, "Hay chon loai san pham");
                 hopLe = false;
             }
 
-            if (!decimal.TryParse(
-                txtGia.Text.Trim(),
-                NumberStyles.Number,
-                CultureInfo.CurrentCulture,
-                out decimal gia))
+            if (!decimal.TryParse(txtGia.Text.Trim(), out gia)
+                || gia < 0)
             {
-                if (!decimal.TryParse(
-                    txtGia.Text.Trim(),
-                    NumberStyles.Number,
-                    CultureInfo.InvariantCulture,
-                    out gia))
-                {
-                    baoLoi.SetError(txtGia, "Giá không hợp lệ");
-                    hopLe = false;
-                }
-            }
-
-            if (decimal.TryParse(
-                txtGia.Text.Trim(),
-                NumberStyles.Number,
-                CultureInfo.CurrentCulture,
-                out decimal giaKiemTra)
-                && giaKiemTra < 0)
-            {
-                baoLoi.SetError(txtGia, "Giá không được âm");
-                hopLe = false;
-            }
-
-            if (decimal.TryParse(
-                txtGia.Text.Trim(),
-                NumberStyles.Number,
-                CultureInfo.InvariantCulture,
-                out decimal giaKiemTra2)
-                && giaKiemTra2 < 0)
-            {
-                baoLoi.SetError(txtGia, "Giá không được âm");
+                baoLoi.SetError(txtGia, "Don gia khong hop le");
                 hopLe = false;
             }
 
             return hopLe;
         }
 
-        private bool LayGia(out decimal gia)
-        {
-            if (decimal.TryParse(
-                txtGia.Text.Trim(),
-                NumberStyles.Number,
-                CultureInfo.CurrentCulture,
-                out gia))
-                return gia >= 0;
-
-            if (decimal.TryParse(
-                txtGia.Text.Trim(),
-                NumberStyles.Number,
-                CultureInfo.InvariantCulture,
-                out gia))
-                return gia >= 0;
-
-            return false;
-        }
-
-        private void ThemSanPham()
+        void ThemSanPham()
         {
             if (!KiemTra())
                 return;
 
-            if (!LayGia(out decimal gia))
+            danhSach.Add(new Product
             {
-                MessageBox.Show("Giá sản phẩm không hợp lệ.");
-                return;
-            }
+                Ma = TaoMaMoi(),
+                Ten = txtTen.Text.Trim(),
+                Loai = cboLoai.Text,
+                Gia = decimal.Parse(txtGia.Text.Trim()),
+                SoLuong = (int)numSoLuong.Value,
+                DuongDanAnh = duongDanAnh
+            });
 
-            Product sp = new Product();
-
-            sp.Ma = TaoMaMoi();
-            sp.Ten = txtTen.Text.Trim();
-            sp.Loai = cboLoai.Text;
-            sp.Gia = gia;
-            sp.SoLuong = (int)numSoLuong.Value;
-            sp.DuongDanAnh = duongDanAnh;
-
-            danhSach.Add(sp);
-
-            CapNhatThongKe();
             LamMoi();
+            CapNhatThongKe();
+            MessageBox.Show("Them san pham thanh cong!");
         }
 
-        private void SuaSanPham()
+        void SuaSanPham()
         {
-            if (dgvSanPham.CurrentRow == null)
+            Product p = dgvSanPham.CurrentRow?.DataBoundItem as Product;
+
+            if (p == null)
             {
-                MessageBox.Show("Vui lòng chọn sản phẩm cần sửa.");
+                MessageBox.Show("Hay chon san pham can sua!");
                 return;
             }
 
             if (!KiemTra())
                 return;
 
-            if (!LayGia(out decimal gia))
-            {
-                MessageBox.Show("Giá sản phẩm không hợp lệ.");
-                return;
-            }
+            p.Ten = txtTen.Text.Trim();
+            p.Loai = cboLoai.Text;
+            p.Gia = decimal.Parse(txtGia.Text.Trim());
+            p.SoLuong = (int)numSoLuong.Value;
+            p.DuongDanAnh = duongDanAnh;
 
-            if (dgvSanPham.CurrentRow.DataBoundItem is not Product sp)
-                return;
-
-            sp.Ten = txtTen.Text.Trim();
-            sp.Loai = cboLoai.Text;
-            sp.Gia = gia;
-            sp.SoLuong = (int)numSoLuong.Value;
-            sp.DuongDanAnh = duongDanAnh;
-
-            nguonDuLieu.ResetBindings(false);
+            nguonDuLieu.ResetCurrentItem();
             CapNhatThongKe();
+            MessageBox.Show("Cap nhat thanh cong!");
         }
 
-        private void XoaSanPham()
+        void XoaSanPham()
         {
-            if (dgvSanPham.CurrentRow == null)
+            Product p = dgvSanPham.CurrentRow?.DataBoundItem as Product;
+
+            if (p == null)
             {
-                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa.");
+                MessageBox.Show("Hay chon san pham can xoa!");
                 return;
             }
 
-            DialogResult ketQua = MessageBox.Show(
-                "Bạn có chắc chắn muốn xóa sản phẩm này không?",
-                "Xác nhận xóa",
+            if (MessageBox.Show(
+                "Ban co chac muon xoa san pham nay?",
+                "Xac nhan",
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (ketQua != DialogResult.Yes)
-                return;
-
-            if (dgvSanPham.CurrentRow.DataBoundItem is Product sp)
+                MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                danhSach.Remove(sp);
+                danhSach.Remove(p);
+                LamMoi();
+                CapNhatThongKe();
             }
-
-            CapNhatThongKe();
-            LamMoi();
         }
 
-        private void LamMoi()
+        void LamMoi()
         {
             txtMa.Text = TaoMaMoi();
             txtTen.Clear();
             txtGia.Clear();
             cboLoai.SelectedIndex = -1;
             numSoLuong.Value = 0;
-
             duongDanAnh = "";
-            picAnh.Image = null;
-
+            picProductImage.Image = null;
             baoLoi.Clear();
             dgvSanPham.ClearSelection();
+            dgvSanPham.CurrentCell = null;
         }
 
-        private void ChonAnh()
+        void ChonAnh()
         {
             using (OpenFileDialog hopThoai = new OpenFileDialog())
             {
-                hopThoai.Title = "Chọn ảnh sản phẩm";
+                hopThoai.Title = "Chon anh san pham";
                 hopThoai.Filter =
-                    "Tệp ảnh|*.jpg;*.jpeg;*.png;*.bmp";
+                    "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
 
                 if (hopThoai.ShowDialog() == DialogResult.OK)
                 {
@@ -557,229 +432,189 @@ namespace QuanLySieuThi.Forms
             }
         }
 
-        private void HienThiAnh(string duongDan)
+        void HienThiAnh(string duongDan)
         {
-            if (picAnh.Image != null)
+            if (picProductImage.Image != null)
             {
-                Image anhCu = picAnh.Image;
-                picAnh.Image = null;
+                Image anhCu = picProductImage.Image;
+                picProductImage.Image = null;
                 anhCu.Dispose();
             }
 
-            if (string.IsNullOrWhiteSpace(duongDan)
-                || !File.Exists(duongDan))
-                return;
-
-            try
+            if (File.Exists(duongDan))
             {
                 using (Image anhGoc = Image.FromFile(duongDan))
                 {
-                    picAnh.Image = new Bitmap(anhGoc);
+                    picProductImage.Image = new Bitmap(anhGoc);
                 }
-            }
-            catch
-            {
-                picAnh.Image = null;
             }
         }
 
-        private void XuatCSV()
+        void XuatCSV()
         {
             using (SaveFileDialog hopThoai = new SaveFileDialog())
             {
-                hopThoai.Title = "Lưu báo cáo kho hàng";
-                hopThoai.Filter = "Tệp CSV|*.csv";
-                hopThoai.FileName = "BaoCaoKhoHang.csv";
+                hopThoai.Title = "Luu bao cao kho";
+                hopThoai.Filter = "CSV Files|*.csv";
+                hopThoai.FileName = "BaoCaoKho.csv";
 
                 if (hopThoai.ShowDialog() != DialogResult.OK)
                     return;
 
-                try
+                using (StreamWriter ghi = new StreamWriter(
+                    hopThoai.FileName, false, Encoding.UTF8))
                 {
-                    using (StreamWriter ghi = new StreamWriter(
-                        hopThoai.FileName, false, Encoding.UTF8))
+                    ghi.WriteLine(
+                        "Ma;Ten;Loai;Gia;SoLuong;DuongDanAnh");
+
+                    foreach (Product p in danhSach)
                     {
                         ghi.WriteLine(
-                            "Ma;Ten;Loai;Gia;SoLuong;DuongDanAnh");
-
-                        foreach (Product sp in danhSach)
-                        {
-                            ghi.WriteLine(
-                                Csv(sp.Ma) + ";" +
-                                Csv(sp.Ten) + ";" +
-                                Csv(sp.Loai) + ";" +
-                                sp.Gia.ToString(CultureInfo.InvariantCulture) + ";" +
-                                sp.SoLuong + ";" +
-                                Csv(sp.DuongDanAnh));
-                        }
+                            $"{Csv(p.Ma)};{Csv(p.Ten)};" +
+                            $"{Csv(p.Loai)};{p.Gia};" +
+                            $"{p.SoLuong};{Csv(p.DuongDanAnh)}");
                     }
+                }
 
-                    MessageBox.Show("Xuất CSV thành công!");
-                }
-                catch (Exception loi)
-                {
-                    MessageBox.Show(
-                        "Không thể xuất file: " + loi.Message);
-                }
+                MessageBox.Show("Xuat CSV thanh cong!");
             }
         }
 
-        private string Csv(string noiDung)
+        string Csv(string chu)
         {
-            noiDung ??= "";
-
-            return "\"" + noiDung.Replace("\"", "\"\"") + "\"";
+            return "\"" + (chu ?? "").Replace("\"", "\"\"") + "\"";
         }
 
-        private void NhapCSV()
+        void NhapCSV()
         {
             using (OpenFileDialog hopThoai = new OpenFileDialog())
             {
-                hopThoai.Title = "Chọn file CSV";
-                hopThoai.Filter = "Tệp CSV|*.csv";
+                hopThoai.Title = "Chon file CSV";
+                hopThoai.Filter = "CSV Files|*.csv";
 
                 if (hopThoai.ShowDialog() != DialogResult.OK)
                     return;
 
                 try
                 {
-                    string[] cacDong = File.ReadAllLines(
+                    string[] dong = File.ReadAllLines(
                         hopThoai.FileName, Encoding.UTF8);
 
-                    if (cacDong.Length <= 1)
-                    {
-                        MessageBox.Show("File CSV không có dữ liệu.");
-                        return;
-                    }
+                    danhSach.Clear();
 
-                    BindingList<Product> duLieuMoi =
-                        new BindingList<Product>();
-
-                    for (int i = 1; i < cacDong.Length; i++)
+                    for (int i = 1; i < dong.Length; i++)
                     {
-                        if (string.IsNullOrWhiteSpace(cacDong[i]))
+                        if (string.IsNullOrWhiteSpace(dong[i]))
                             continue;
 
-                        string[] cot = TachCSV(cacDong[i]);
+                        string[] cot = TachCSV(dong[i]);
 
                         if (cot.Length < 6)
                             continue;
 
+                        decimal gia;
+                        int soLuong;
+
                         if (!decimal.TryParse(
-                            cot[3],
-                            NumberStyles.Number,
-                            CultureInfo.InvariantCulture,
-                            out decimal gia))
+                            cot[3], NumberStyles.Number,
+                            CultureInfo.InvariantCulture, out gia))
+                        {
+                            if (!decimal.TryParse(cot[3], out gia))
+                                continue;
+                        }
+
+                        if (!int.TryParse(cot[4], out soLuong))
                             continue;
 
-                        if (!int.TryParse(cot[4], out int soLuong))
-                            continue;
-
-                        Product sp = new Product();
-
-                        sp.Ma = cot[0];
-                        sp.Ten = cot[1];
-                        sp.Loai = cot[2];
-                        sp.Gia = gia;
-                        sp.SoLuong = soLuong;
-                        sp.DuongDanAnh = cot[5];
-
-                        duLieuMoi.Add(sp);
+                        danhSach.Add(new Product
+                        {
+                            Ma = cot[0],
+                            Ten = cot[1],
+                            Loai = cot[2],
+                            Gia = gia,
+                            SoLuong = soLuong,
+                            DuongDanAnh = cot[5]
+                        });
                     }
 
-                    danhSach.Clear();
-
-                    foreach (Product sp in duLieuMoi)
-                    {
-                        danhSach.Add(sp);
-                    }
-
-                    CapNhatThongKe();
                     LamMoi();
-
-                    MessageBox.Show(
-                        "Đã nhập " + duLieuMoi.Count +
-                        " sản phẩm từ CSV.");
+                    CapNhatThongKe();
+                    MessageBox.Show("Nhap CSV thanh cong!");
                 }
                 catch (Exception loi)
                 {
                     MessageBox.Show(
-                        "Không thể nhập file: " + loi.Message);
+                        "Khong doc duoc file: " + loi.Message);
                 }
             }
         }
 
-        private string[] TachCSV(string dong)
+        string[] TachCSV(string dong)
         {
             var ketQua = new System.Collections.Generic.List<string>();
-            StringBuilder noiDung = new StringBuilder();
-            bool dangTrongNgoacKep = false;
+            var o = new StringBuilder();
+            bool trongNgoac = false;
 
             for (int i = 0; i < dong.Length; i++)
             {
-                char kyTu = dong[i];
+                char c = dong[i];
 
-                if (kyTu == '"')
+                if (c == '"')
                 {
-                    if (dangTrongNgoacKep
-                        && i + 1 < dong.Length
+                    if (trongNgoac && i + 1 < dong.Length
                         && dong[i + 1] == '"')
                     {
-                        noiDung.Append('"');
+                        o.Append('"');
                         i++;
                     }
                     else
                     {
-                        dangTrongNgoacKep = !dangTrongNgoacKep;
+                        trongNgoac = !trongNgoac;
                     }
                 }
-                else if (kyTu == ';' && !dangTrongNgoacKep)
+                else if (c == ';' && !trongNgoac)
                 {
-                    ketQua.Add(noiDung.ToString());
-                    noiDung.Clear();
+                    ketQua.Add(o.ToString());
+                    o.Clear();
                 }
                 else
                 {
-                    noiDung.Append(kyTu);
+                    o.Append(c);
                 }
             }
 
-            ketQua.Add(noiDung.ToString());
-
+            ketQua.Add(o.ToString());
             return ketQua.ToArray();
         }
 
-        private void CapNhatThongKe()
+        void CapNhatThongKe()
         {
-            int tongSoLuong = danhSach.Sum(sp => sp.SoLuong);
-
+            int tongSoLuong = danhSach.Sum(p => p.SoLuong);
             decimal tongGiaTri = danhSach.Sum(
-                sp => sp.Gia * sp.SoLuong);
+                p => p.Gia * p.SoLuong);
 
             lblTongSoLuong.Text =
-                "Tổng số lượng: " + tongSoLuong;
+                "Tong so luong: " + tongSoLuong;
 
             lblTongGiaTri.Text =
-                "Tổng giá trị: " + tongGiaTri.ToString("N0");
+                "Tong gia tri kho: " + tongGiaTri.ToString("N0")
+                + " VNĐ";
         }
 
-        private void FrmInventoryManager_FormClosing(
-            object? sender, FormClosingEventArgs e)
+        void FrmInventoryManager_FormClosing(
+            object sender, FormClosingEventArgs e)
         {
             DialogResult ketQua = MessageBox.Show(
-                "Bạn có muốn thoát chương trình không?",
-                "Xác nhận thoát",
+                "Ban co chac chan muon thoat?",
+                "Xac nhan thoat",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
             if (ketQua != DialogResult.Yes)
-            {
                 e.Cancel = true;
-            }
             else
-            {
                 dongHo.Stop();
-            }
         }
     }
 }
+
