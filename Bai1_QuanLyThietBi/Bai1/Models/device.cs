@@ -1,7 +1,7 @@
 
 using System.ComponentModel;
 
-namespace Bai1.Models
+namespace Bai1_QuanLyThietBi.Models
 {
     public class Device : INotifyPropertyChanged
     {
@@ -14,31 +14,51 @@ namespace Bai1.Models
         public string Ma
         {
             get { return ma; }
-            set { ma = value; ThongBaoThayDoi("Ma"); }
+            set
+            {
+                ma = value;
+                ThongBaoThayDoi("Ma");
+            }
         }
 
         public string Ten
         {
             get { return ten; }
-            set { ten = value; ThongBaoThayDoi("Ten"); }
+            set
+            {
+                ten = value;
+                ThongBaoThayDoi("Ten");
+            }
         }
 
         public string Loai
         {
             get { return loai; }
-            set { loai = value; ThongBaoThayDoi("Loai"); }
+            set
+            {
+                loai = value;
+                ThongBaoThayDoi("Loai");
+            }
         }
 
         public decimal Gia
         {
             get { return gia; }
-            set { gia = value; ThongBaoThayDoi("Gia"); }
+            set
+            {
+                gia = value;
+                ThongBaoThayDoi("Gia");
+            }
         }
 
         public int SoLuong
         {
             get { return soLuong; }
-            set { soLuong = value; ThongBaoThayDoi("SoLuong"); }
+            set
+            {
+                soLuong = value;
+                ThongBaoThayDoi("SoLuong");
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -51,4 +71,4 @@ namespace Bai1.Models
         }
     }
 }
-S
+
