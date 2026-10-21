@@ -1,6 +1,8 @@
 
+
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Forms;
 using Bai1_QuanLyThietBi.Models;
 
@@ -10,28 +12,31 @@ namespace Bai1_QuanLyThietBi
     {
         BindingList<Device> danhSach = new BindingList<Device>();
         BindingSource nguonDuLieu = new BindingSource();
+        ErrorProvider loi = new ErrorProvider();
 
         TextBox txtMa = new TextBox();
         TextBox txtTen = new TextBox();
         ComboBox cboLoai = new ComboBox();
         TextBox txtGia = new TextBox();
-        TextBox txtSoLuong = new TextBox();
+        NumericUpDown numSoLuong = new NumericUpDown();
 
         Button btnThem = new Button();
-        Button btnSua = new Button();
+        Button btnCapNhat = new Button();
         Button btnXoa = new Button();
         Button btnLamMoi = new Button();
 
         DataGridView dgv = new DataGridView();
-        ErrorProvider loi = new ErrorProvider();
 
         public Form1()
         {
             InitializeComponent();
+
             TaoGiaoDien();
 
             nguonDuLieu.DataSource = danhSach;
             dgv.DataSource = nguonDuLieu;
+
+            txtMa.Text = TaoMaMoi();
         }
 
         void TaoGiaoDien()
@@ -40,50 +45,65 @@ namespace Bai1_QuanLyThietBi
             Width = 1000;
             Height = 650;
             StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
 
-            TaoNhan("Mã thiết bị", 20, 20);
-            txtMa.SetBounds(130, 20, 200, 25);
+            TaoNhan("Mã thiết bị:", 25, 25);
+            txtMa.SetBounds(140, 25, 220, 28);
+            txtMa.ReadOnly = true;
+            txtMa.TabStop = false;
             Controls.Add(txtMa);
 
-            TaoNhan("Tên thiết bị", 20, 60);
-            txtTen.SetBounds(130, 60, 200, 25);
+            TaoNhan("Tên thiết bị:", 25, 70);
+            txtTen.SetBounds(140, 70, 220, 28);
             Controls.Add(txtTen);
 
-            TaoNhan("Loại thiết bị", 20, 100);
-            cboLoai.SetBounds(130, 100, 200, 25);
+            TaoNhan("Loại thiết bị:", 25, 115);
+            cboLoai.SetBounds(140, 115, 220, 28);
             cboLoai.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLoai.Items.AddRange(new object[]
             {
-                "Máy tính", "Điện thoại", "Phụ kiện", "Khác"
+                "Máy tính",
+                "Điện thoại",
+                "Phụ kiện",
+                "Khác"
             });
             Controls.Add(cboLoai);
 
-            TaoNhan("Giá", 400, 20);
-            txtGia.SetBounds(500, 20, 200, 25);
+            TaoNhan("Đơn giá:", 410, 25);
+            txtGia.SetBounds(510, 25, 220, 28);
             Controls.Add(txtGia);
 
-            TaoNhan("Số lượng", 400, 60);
-            txtSoLuong.SetBounds(500, 60, 200, 25);
-            Controls.Add(txtSoLuong);
+            TaoNhan("Số lượng:", 410, 70);
+            numSoLuong.SetBounds(510, 70, 220, 28);
+            numSoLuong.Minimum = 0;
+            numSoLuong.Maximum = 1000000;
+            numSoLuong.DecimalPlaces = 0;
+            numSoLuong.ThousandsSeparator = true;
+            Controls.Add(numSoLuong);
 
-            TaoNut(btnThem, "Thêm", 20, BtnThem_Click);
-            TaoNut(btnSua, "Sửa", 130, BtnSua_Click);
-            TaoNut(btnXoa, "Xóa", 240, BtnXoa_Click);
-            TaoNut(btnLamMoi, "Làm mới", 350, BtnLamMoi_Click);
+            TaoNut(btnThem, "Thêm", 25, BtnThem_Click);
+            TaoNut(btnCapNhat, "Cập nhật", 140, BtnCapNhat_Click);
+            TaoNut(btnXoa, "Xóa", 255, BtnXoa_Click);
+            TaoNut(btnLamMoi, "Làm mới", 370, BtnLamMoi_Click);
 
-            dgv.SetBounds(20, 210, 940, 380);
+            dgv.SetBounds(25, 215, 930, 370);
             dgv.AutoGenerateColumns = false;
             dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
             dgv.ReadOnly = true;
-            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.MultiSelect = false;
+            dgv.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
             dgv.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.RowHeadersVisible = false;
+            dgv.BackgroundColor = System.Drawing.Color.White;
 
             ThemCot("Ma", "Mã thiết bị");
             ThemCot("Ten", "Tên thiết bị");
             ThemCot("Loai", "Loại thiết bị");
-            ThemCot("Gia", "Giá");
+            ThemCot("Gia", "Đơn giá");
             ThemCot("SoLuong", "Số lượng");
 
             dgv.CellClick += Dgv_CellClick;
@@ -96,7 +116,10 @@ namespace Bai1_QuanLyThietBi
         {
             Label nhan = new Label();
             nhan.Text = noiDung;
-            nhan.SetBounds(x, y, 100, 25);
+            nhan.SetBounds(x, y, 110, 28);
+            nhan.TextAlign =
+                System.Drawing.ContentAlignment.MiddleLeft;
+
             Controls.Add(nhan);
         }
 
@@ -107,7 +130,7 @@ namespace Bai1_QuanLyThietBi
             EventHandler suKien)
         {
             nut.Text = noiDung;
-            nut.SetBounds(x, 150, 100, 35);
+            nut.SetBounds(x, 160, 100, 35);
             nut.Click += suKien;
             Controls.Add(nut);
         }
@@ -117,56 +140,87 @@ namespace Bai1_QuanLyThietBi
             DataGridViewTextBoxColumn cot =
                 new DataGridViewTextBoxColumn();
 
+            cot.Name = thuocTinh;
             cot.DataPropertyName = thuocTinh;
             cot.HeaderText = tieuDe;
-            cot.Name = thuocTinh;
+            cot.SortMode = DataGridViewColumnSortMode.NotSortable;
 
             if (thuocTinh == "Gia")
-                cot.DefaultCellStyle.Format = "N0";
+            {
+                cot.DefaultCellStyle.Format = "#,##0 '₫'";
+                cot.DefaultCellStyle.Alignment =
+                    DataGridViewContentAlignment.MiddleRight;
+            }
+
+            if (thuocTinh == "SoLuong")
+            {
+                cot.DefaultCellStyle.Alignment =
+                    DataGridViewContentAlignment.MiddleCenter;
+            }
 
             dgv.Columns.Add(cot);
         }
 
-        bool KiemTraDuLieu()
+        string TaoMaMoi()
+        {
+            int soLonNhat = 0;
+
+            foreach (Device thietBi in danhSach)
+            {
+                string ma = thietBi.Ma;
+
+                if (ma.StartsWith("TB", StringComparison.OrdinalIgnoreCase)
+                    && int.TryParse(ma.Substring(2), out int so))
+                {
+                    if (so > soLonNhat)
+                    {
+                        soLonNhat = so;
+                    }
+                }
+            }
+
+            return "TB" + (soLonNhat + 1).ToString("D3");
+        }
+
+        bool KiemTraDuLieu(out decimal gia)
         {
             loi.Clear();
-
-            if (string.IsNullOrWhiteSpace(txtMa.Text))
-            {
-                loi.SetError(txtMa, "Hãy nhập mã thiết bị");
-                txtMa.Focus();
-                return false;
-            }
+            gia = 0;
 
             if (string.IsNullOrWhiteSpace(txtTen.Text))
             {
-                loi.SetError(txtTen, "Hãy nhập tên thiết bị");
+                loi.SetError(txtTen, "Vui lòng nhập tên thiết bị.");
                 txtTen.Focus();
                 return false;
             }
 
             if (cboLoai.SelectedIndex == -1)
             {
-                loi.SetError(cboLoai, "Hãy chọn loại thiết bị");
+                loi.SetError(cboLoai, "Vui lòng chọn loại thiết bị.");
                 cboLoai.Focus();
                 return false;
             }
 
-            decimal gia;
-            if (!decimal.TryParse(txtGia.Text, out gia) || gia < 0)
-            {
-                loi.SetError(txtGia, "Giá phải là số không âm");
-                txtGia.Focus();
-                return false;
-            }
+            bool giaHopLe =
+                decimal.TryParse(
+                    txtGia.Text,
+                    NumberStyles.Number,
+                    CultureInfo.CurrentCulture,
+                    out gia)
+                ||
+                decimal.TryParse(
+                    txtGia.Text,
+                    NumberStyles.Number,
+                    CultureInfo.InvariantCulture,
+                    out gia);
 
-            int soLuong;
-            if (!int.TryParse(txtSoLuong.Text, out soLuong)
-                || soLuong < 0)
+            if (!giaHopLe || gia < 0)
             {
-                loi.SetError(txtSoLuong,
-                    "Số lượng phải là số nguyên không âm");
-                txtSoLuong.Focus();
+                loi.SetError(
+                    txtGia,
+                    "Đơn giá phải là số hợp lệ và không âm.");
+
+                txtGia.Focus();
                 return false;
             }
 
@@ -175,61 +229,62 @@ namespace Bai1_QuanLyThietBi
 
         void BtnThem_Click(object? sender, EventArgs e)
         {
-            if (!KiemTraDuLieu())
-                return;
-
-            foreach (Device thietBi in danhSach)
+            if (!KiemTraDuLieu(out decimal gia))
             {
-                if (thietBi.Ma == txtMa.Text.Trim())
-                {
-                    MessageBox.Show("Mã thiết bị đã tồn tại!");
-                    return;
-                }
+                return;
             }
 
             Device moi = new Device();
-            moi.Ma = txtMa.Text.Trim();
+
+            moi.Ma = TaoMaMoi();
             moi.Ten = txtTen.Text.Trim();
             moi.Loai = cboLoai.Text;
-            moi.Gia = decimal.Parse(txtGia.Text);
-            moi.SoLuong = int.Parse(txtSoLuong.Text);
+            moi.Gia = gia;
+            moi.SoLuong = (int)numSoLuong.Value;
 
             danhSach.Add(moi);
+
+            nguonDuLieu.ResetBindings(false);
+
             XoaTrang();
 
-            MessageBox.Show("Thêm thiết bị thành công!");
+            MessageBox.Show(
+                "Thêm thiết bị thành công!",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
-        void BtnSua_Click(object? sender, EventArgs e)
+        void BtnCapNhat_Click(object? sender, EventArgs e)
         {
             if (dgv.CurrentRow == null ||
                 dgv.CurrentRow.DataBoundItem is not Device thietBi)
             {
-                MessageBox.Show("Hãy chọn thiết bị cần sửa!");
+                MessageBox.Show(
+                    "Vui lòng chọn thiết bị cần cập nhật.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!KiemTraDuLieu())
-                return;
-
-            foreach (Device khac in danhSach)
+            if (!KiemTraDuLieu(out decimal gia))
             {
-                if (khac != thietBi &&
-                    khac.Ma == txtMa.Text.Trim())
-                {
-                    MessageBox.Show("Mã thiết bị đã tồn tại!");
-                    return;
-                }
+                return;
             }
 
-            thietBi.Ma = txtMa.Text.Trim();
             thietBi.Ten = txtTen.Text.Trim();
             thietBi.Loai = cboLoai.Text;
-            thietBi.Gia = decimal.Parse(txtGia.Text);
-            thietBi.SoLuong = int.Parse(txtSoLuong.Text);
+            thietBi.Gia = gia;
+            thietBi.SoLuong = (int)numSoLuong.Value;
 
             nguonDuLieu.ResetBindings(false);
-            MessageBox.Show("Sửa thiết bị thành công!");
+
+            MessageBox.Show(
+                "Cập nhật thiết bị thành công!",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         void BtnXoa_Click(object? sender, EventArgs e)
@@ -237,12 +292,17 @@ namespace Bai1_QuanLyThietBi
             if (dgv.CurrentRow == null ||
                 dgv.CurrentRow.DataBoundItem is not Device thietBi)
             {
-                MessageBox.Show("Hãy chọn thiết bị cần xóa!");
+                MessageBox.Show(
+                    "Vui lòng chọn thiết bị cần xóa.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
             DialogResult ketQua = MessageBox.Show(
-                "Bạn có chắc muốn xóa thiết bị này?",
+                "Bạn có chắc chắn muốn xóa thiết bị "
+                    + thietBi.Ten + " không?",
                 "Xác nhận xóa",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -250,7 +310,16 @@ namespace Bai1_QuanLyThietBi
             if (ketQua == DialogResult.Yes)
             {
                 danhSach.Remove(thietBi);
+
+                nguonDuLieu.ResetBindings(false);
+
                 XoaTrang();
+
+                MessageBox.Show(
+                    "Xóa thiết bị thành công!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
 
@@ -259,32 +328,46 @@ namespace Bai1_QuanLyThietBi
             XoaTrang();
         }
 
-        void Dgv_CellClick(object? sender, DataGridViewCellEventArgs e)
+        void Dgv_CellClick(
+            object? sender,
+            DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
+            {
                 return;
+            }
 
-            Device thietBi =
-                (Device)dgv.Rows[e.RowIndex].DataBoundItem;
+            if (dgv.Rows[e.RowIndex].DataBoundItem is not Device thietBi)
+            {
+                return;
+            }
 
             txtMa.Text = thietBi.Ma;
             txtTen.Text = thietBi.Ten;
-            cboLoai.Text = thietBi.Loai;
-            txtGia.Text = thietBi.Gia.ToString();
-            txtSoLuong.Text = thietBi.SoLuong.ToString();
+            cboLoai.SelectedItem = thietBi.Loai;
+            txtGia.Text = thietBi.Gia.ToString(
+                CultureInfo.CurrentCulture);
+            numSoLuong.Value = thietBi.SoLuong;
+
+            loi.Clear();
         }
 
         void XoaTrang()
         {
-            txtMa.Clear();
+            txtMa.Text = TaoMaMoi();
             txtTen.Clear();
             cboLoai.SelectedIndex = -1;
             txtGia.Clear();
-            txtSoLuong.Clear();
+            numSoLuong.Value = 0;
+
             loi.Clear();
             dgv.ClearSelection();
-            txtMa.Focus();
+            dgv.CurrentCell = null;
+
+            txtTen.Focus();
         }
     }
 }
-S
+
+
+
