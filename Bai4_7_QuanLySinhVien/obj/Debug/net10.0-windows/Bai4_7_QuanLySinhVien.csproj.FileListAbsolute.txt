@@ -1,0 +1,14 @@
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\bin\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.exe
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\bin\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.deps.json
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\bin\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.runtimeconfig.json
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\bin\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.dll
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\bin\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.pdb
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.AssemblyInfoInputs.cache
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.AssemblyInfo.cs
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.csproj.CoreCompileInputs.cache
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.dll
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\refint\Bai4_7_QuanLySinhVien.dll
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.pdb
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\Bai4_7_QuanLySinhVien.genruntimeconfig.cache
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\obj\Debug\net10.0-windows\ref\Bai4_7_QuanLySinhVien.dll
