@@ -1,0 +1,14 @@
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.AssemblyInfoInputs.cache
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.AssemblyInfo.cs
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.csproj.CoreCompileInputs.cache
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\bin\Debug\net10.0-windows\Bai1_ClinicAppointment.exe
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\bin\Debug\net10.0-windows\Bai1_ClinicAppointment.deps.json
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\bin\Debug\net10.0-windows\Bai1_ClinicAppointment.runtimeconfig.json
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\bin\Debug\net10.0-windows\Bai1_ClinicAppointment.dll
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\bin\Debug\net10.0-windows\Bai1_ClinicAppointment.pdb
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.dll
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\refint\Bai1_ClinicAppointment.dll
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.pdb
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\Bai1_ClinicAppointment.genruntimeconfig.cache
+C:\Users\doan1\Documents\DCSharpBaiTapOOP\Bai4_7_QuanLySinhVien\Bai1_ClinicAppointment\obj\Debug\net10.0-windows\ref\Bai1_ClinicAppointment.dll
