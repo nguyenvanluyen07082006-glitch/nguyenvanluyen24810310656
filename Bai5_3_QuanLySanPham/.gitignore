@@ -1,0 +1,19 @@
+
+# Thư mục build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Visual Studio Code
+.vscode/
+
+# File hệ thống
+.DS_Store
+Thumbs.db
+
+# File log
+*.log
